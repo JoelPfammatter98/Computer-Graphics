@@ -1,0 +1,36 @@
+#start {
+    font-size: 70px;
+    position: absolute;
+    color: #00FF00;
+    /*margin-left: 383px;*/
+    margin-top: -10px;
+    display: none;
+    width: 800px;
+    text-align: center;
+}
+
+#winner {
+    font-size: 70px;
+    color: #00FF00;
+    margin-top: -10px;
+    display: none;
+    width: 800px;
+    text-align: center;
+}
+
+#HPBar {
+    width: 800px;
+    height: 30px;
+}
+
+#player1HP {
+    float: left;
+}
+
+#player2HP {
+    float: right;
+}
+
+.HPIcon {
+    width: 30px;
+}

@@ -26,8 +26,12 @@ var rectangleObject = {
 
 var posLeft = 0;
 var posRight = 0;
-var posBall = {x: 0, y: 0, direction: "left"};
+var posBall = {x: 0, y: 0, direction: ["left","mid"]};
 var startBall = 0;
+var player = 1;
+var playerHP = 2;
+var player1HP = playerHP;
+var player2HP = playerHP;
 
 /**
  * Startup function to be called when the body is loaded
@@ -41,7 +45,7 @@ function startup() {
     window.addEventListener('keydown', onKeydown, false);
 
 
-
+    HP();
     draw();
 }
 
@@ -100,27 +104,26 @@ function draw() {
     drawShape(0.01, 2, 0, 0);*/
 
 
-    drawShape(25/gl.drawingBufferWidth, 0.3, -750/gl.drawingBufferWidth, posLeft);
+    drawShape(25/gl.drawingBufferWidth, 0.3, -750/gl.drawingBufferWidth, posLeft, [0,1,0,1]);
     //drawShape(25/gl.drawingBufferWidth, 200/gl.drawingBufferHeight, 750/gl.drawingBufferWidth, 200/gl.drawingBufferHeight);
-    drawShape(25/gl.drawingBufferWidth, 0.3, 750/gl.drawingBufferWidth, posRight);
-    drawShape(5/gl.drawingBufferWidth, 1200/gl.drawingBufferHeight, 0, 0);
-    drawShape(0.05, 0.06, posBall.x, posBall.y);
+    drawShape(25/gl.drawingBufferWidth, 0.3, 750/gl.drawingBufferWidth, posRight, [1,0,1,1]);
+    drawShape(5/gl.drawingBufferWidth, 1200/gl.drawingBufferHeight, 0, 0, [1,1,1,1]);
+    drawShape(0.05, 0.06, posBall.x, posBall.y, [0,1,0,1]);
 
     /*drawShape(25.0/ gl.drawingBufferWidth,150.0/gl.drawingBufferHeight, 30, 0/gl.drawingBufferHeight)
     drawShape(25.0/ gl.drawingBufferWidth,150.0/gl.drawingBufferHeight, -30, 0/gl.drawingBufferHeight)
     drawShape(5.0/ gl.drawingBufferWidth,1200.0/gl.drawingBufferHeight, 0, 0/gl.drawingBufferHeight)*/
 
-
-    gl.uniform4f(ctx.uColorId, 0, 1, 0, 1);
+    //gl.uniform4f(ctx.uColorId, 0, 1, 0, 1);
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 
-    if(startBall == 0) {
-        window.requestAnimationFrame(animateBall)
+    /*if(startBall == 0) {
+        animateBallV = requestAnimationFrame(animateBall)
         startBall = 1;
-    }
+    }*/
 }
 
-function drawShape(width, height, x, y) {
+function drawShape(width, height, x, y, color) {
 
     var projectionMat = mat3.create();
     mat3.fromTranslation(projectionMat, [x,y]);
@@ -132,13 +135,8 @@ function drawShape(width, height, x, y) {
     mat3.translate(projectionMat, projectionMat, [x,y]);
     gl.uniformMatrix3fv(ctx.uProjectionMatId, false, projectionMat);*/
 
-
-    gl.uniform4f(ctx.uColorId, 0, 1, 0, 1);
+    gl.uniform4f(ctx.uColorId, color[0], color[1], color[2], color[3]);
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
-}
-
-function draw1() {
-
 }
 
 // Key Handling
@@ -185,44 +183,61 @@ var animationLeftUpV;
 var animationLeftDownV;
 var animationRightUpV;
 var animationRightDownV;
-
+var animateBallV;
+var keyLeftDown = 0;
+var keyRightDown = 0;
 window.addEventListener('keydown', function (event)
 {
     if (event.keyCode === 87) {
-        window.requestAnimationFrame(animationLeftUp)
+        if(keyLeftDown == 0) {
+            window.requestAnimationFrame(animationLeftUp);
+            keyLeftDown = 1;
+        }
     }
     else if (event.keyCode === 83) {
-        animationLeftDownV = requestAnimationFrame(animationLeftDown)
+        if(keyLeftDown == 0) {
+            animationLeftDownV = requestAnimationFrame(animationLeftDown);
+            keyLeftDown = 1;
+        }
     }
-    else if (event.keyCode === 38) {
-        animationRightUpV = requestAnimationFrame(animationRightUp)
+    else if (event.keyCode === 38 && player == 2) {
+        if(keyRightDown == 0) {
+            animationRightUpV = requestAnimationFrame(animationRightUp);
+            keyRightDown = 1;
+        }
     }
-    else if (event.keyCode === 40) {
-        animationRightDownV = requestAnimationFrame(animationRightDown)
+    else if (event.keyCode === 40 && player == 2) {
+        if(keyRightDown == 0) {
+            animationRightDownV = requestAnimationFrame(animationRightDown);
+            keyRightDown = 1;
+        }
     }
-
 });
 
 window.addEventListener('keyup', function (event)
 {
     if (event.keyCode === 87) {
         cancelAnimationFrame(animationLeftUpV);
+        keyLeftDown = 0;
     }
     else if (event.keyCode === 83) {
         cancelAnimationFrame(animationLeftDownV);
+        keyLeftDown = 0;
     }
     else if (event.keyCode === 38) {
         cancelAnimationFrame(animationRightUpV);
+        keyRightDown = 0;
     }
     else if (event.keyCode === 40) {
         cancelAnimationFrame(animationRightDownV);
+        keyRightDown = 0;
     }
 
 });
 
 function animationLeftUp() {
     if(posLeft <= 0.8) {
-        posLeft = posLeft + 0.01;
+        posLeft = posLeft + 0.035;
         draw();
         animationLeftUpV = requestAnimationFrame(animationLeftUp);
     }
@@ -230,7 +245,7 @@ function animationLeftUp() {
 
 function animationLeftDown() {
     if(posLeft >= -0.8) {
-        posLeft = posLeft - 0.01;
+        posLeft = posLeft - 0.035;
         draw();
         animationLeftDownV = requestAnimationFrame(animationLeftDown);
     }
@@ -238,7 +253,7 @@ function animationLeftDown() {
 
 function animationRightUp() {
     if(posRight <= 0.8) {
-        posRight = posRight + 0.01;
+        posRight = posRight + 0.035;
         draw();
         animationRightUpV = requestAnimationFrame(animationRightUp);
     }
@@ -246,42 +261,196 @@ function animationRightUp() {
 
 function animationRightDown() {
     if(posRight >= -0.8) {
-        posRight = posRight - 0.01;
+        posRight = posRight - 0.035;
         draw();
         animationRightDownV = requestAnimationFrame(animationRightDown);
     }
 }
 
-function checkCollision() { //posBall.x <= 0.5 &&
-    if(posBall.x <= -0.9 && posBall.direction == "left" && (posBall.y > (posLeft - 0.175) && posBall.y < (posLeft + 0.175))) {
-        posBall.direction = "right";
+function checkCollision() {
+    if(posBall.x < -0.92) {
+        //console.log("Right wins");
+        /*posBall.y = 0;
+        posBall.x = 0;
+        posBall.direction[0] = "left";
+        posBall.direction[1] = "mid";
+        if(player == 1) {
+            posRight = 0;
+        }*/
+        gameEnd(2);
     }
-    else if(posBall.direction == "right" && posBall.x >= 0.9 && (posBall.y > (posRight - 0.175) && posBall.y < (posRight + 0.175))) {
-        posBall.direction = "left";
+    else if(posBall.x > 0.92) {
+        //console.log("Left wins")
+        /*posBall.y = 0;
+        posBall.x = 0;
+        posBall.direction[0] = "right";
+        posBall.direction[1] = "mid";
+        if(player == 1) {
+            posRight = 0;
+        }*/
+        gameEnd(1)
     }
-    else if(posBall.direction == "right") {
-        posBall.x = posBall.x + 0.01;
+    else if(posBall.x <= -0.9 && posBall.direction[0] == "left" && (posBall.y > (posLeft - 0.175) && posBall.y < (posLeft + 0.175))) {
+        posBall.direction[0] = "right";
+        if(posBall.direction[1] == "mid") {
+            posBall.direction[1] = "down";
+        }
     }
-    else if(posBall.direction == "left"){
-        posBall.x = posBall.x - 0.01;
+    else if(posBall.direction[0] == "right" && posBall.x >= 0.9 && (posBall.y > (posRight - 0.175) && posBall.y < (posRight + 0.175))) {
+        posBall.direction[0] = "left";
+        if(posBall.direction[1] == "mid") {
+            posBall.direction[1] = "down";
+        }
     }
-    /*else {
-        posBall.direction = "right";
-        posBall.x = posBall.x - 0.01;
-    }*/
+    else if(posBall.y >= 0.97 || posBall.y <= -0.97) {
+        if(posBall.direction[1] == "up") {
+            posBall.direction[1] = "down";
+            posBall.y = posBall.y - 0.01;
+        }
+        else {
+            posBall.direction[1] = "up";
+            posBall.y = posBall.y + 0.01;
+        }
+    }
+    else if(posBall.direction[0] == "right" && posBall.direction[1] == "mid") {
+        posBall.x = posBall.x + 0.02;
+    }
+    else if(posBall.direction[0] == "left" && posBall.direction[1] == "mid") {
+        posBall.x = posBall.x - 0.02;
+    }
+    else if(posBall.direction[0] == "right" && posBall.direction[1] == "up") {
+        posBall.x = posBall.x + 0.02;
+        posBall.y = posBall.y + 0.01;
+    }
+    else if(posBall.direction[0] == "right" && posBall.direction[1] == "down") {
+        posBall.x = posBall.x + 0.02;
+        posBall.y = posBall.y - 0.01;
+    }
+    else if(posBall.direction[0] == "left" && posBall.direction[1] == "up"){
+        posBall.x = posBall.x - 0.02;
+        posBall.y = posBall.y + 0.01;
+    }
+    else if(posBall.direction[0] == "left" && posBall.direction[1] == "down"){
+        posBall.x = posBall.x - 0.02;
+        posBall.y = posBall.y - 0.01;
+    }
 }
 
-function updateBall() {
-
+function KIAnimation() {
+    if(posBall.y < posRight) {
+        if((Math.round(posRight * 100)/100) == 0.81) {
+            posRight = posRight - 0.01;
+        }
+        else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+            posRight = posRight - 0.01;
+        }
+    }
+    else if( posBall.y > posRight) {
+        if((Math.round(posRight * 100)/100) == -0.81) {
+            posRight = posRight + 0.01;
+        }
+        else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+            posRight = posRight + 0.01;
+        }
+    }
 }
 
 function animateBall() {
-    //posBall.x = posBall.x + 0.01;
+    animateBallV = requestAnimationFrame(animateBall);
     checkCollision();
+    if(player == 1) {
+        KIAnimation();
+    }
     draw();
-    window.requestAnimationFrame(animateBall);
 }
 
+function gameEnd(winner) {
+    cancelAnimationFrame(animateBallV);
+    posBall.y = 0;
+    posBall.x = 0;
+    posBall.direction[0] = "left";
+    posBall.direction[1] = "mid";
+    posRight = 0;
+    posLeft = 0;
+    var count = 3;
+
+    if(winner == 1) {
+        if(player2HP > 1) {
+            player2HP--;
+            $("#player2HP img").last().remove();
+            $("#winner").text("Player 1 wins this round");
+            $("#winner").show();
+        }
+        else {
+            player2HP = 0;
+            $("#player2HP img").last().remove();
+            $("#winner").text("Player 1 wins the Game");
+            $("#winner").show();
+        }
+    }
+    else if(winner == 2){
+        if(player1HP > 1) {
+            player1HP--;
+            $("#player1HP img").last().remove();
+            if (player == 1) {
+                $("#winner").text("Computer wins this round");
+            } else {
+                $("#winner").text("Player 2 wins this round");
+            }
+            $("#winner").show();
+        }
+        else {
+            player1HP = 0;
+            $("#player1HP img").last().remove();
+            $("#winner").text("Player 2 wins the Game");
+            $("#winner").show();
+            return
+        }
+    }
 
 
+    $("#start").text(count);
+    $("#start").show();
 
+        setTimeout(function () {
+            count--;
+            $("#start").text(count);
+
+            setTimeout(function () {
+                count--;
+                $("#start").text(count);
+
+                setTimeout(function () {
+                    $("#start").text("GO");
+                    animateBallV = requestAnimationFrame(animateBall);
+
+                    setTimeout(function () {
+                        $("#start").hide();
+                        $("#winner").hide();
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+}
+
+function playerNumber(num) {
+    player = num;
+}
+
+function startGame() {
+    $("#start").hide();
+    $("#winner").hide();
+    $("#player1HP").empty();
+    $("#player2HP").empty();
+    HP();
+    player1HP = playerHP;
+    player2HP = playerHP;
+    animateBallV = requestAnimationFrame(animateBall)
+}
+
+function HP() {
+    for(var i = 0; i < playerHP; i++) {
+        $("#player1HP").prepend('<img class=\"HPIcon\" src=\"player1HP.png\">');
+        $("#player2HP").prepend('<img class=\"HPIcon\" src=\"player2HP.png\">');
+    }
+}

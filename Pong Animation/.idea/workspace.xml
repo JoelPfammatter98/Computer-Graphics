@@ -20,17 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9012736-58fa-4019-9600-74fcdff9aadf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Grafik/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/.idea/solutionExercise2_1.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/FragmentShader.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/Pong.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/VertexShader.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/gl-matrix.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/pong.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/shaderUtils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Grafik/pong_start/webgl-debug.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pong.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pong.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/pong.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Texture Mapping/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Texture Mapping/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,9 +40,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/Pong-WebGL-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Texture Mapping" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -61,7 +55,7 @@
       <option name="presentableId" value="Default" />
       <updated>1601655462039</updated>
       <workItem from="1601655463069" duration="8433000" />
-      <workItem from="1601844128545" duration="8414000" />
+      <workItem from="1601844128545" duration="30387000" />
     </task>
     <servers />
   </component>
@@ -80,10 +74,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1601846056545">
+    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1601913942065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1601846056545" />
+    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1601913942065" />
     <state x="2660" y="279" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1601655857251" />
     <state x="777" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601851755739">
       <screen x="0" y="0" width="1920" height="1050" />

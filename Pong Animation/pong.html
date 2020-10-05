@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pong</title>
-    <script type="text/javascript" src="webgl-debug.js"></script>
-    <script type="text/javascript" src="shaderUtils.js"></script>
-    <script type="text/javascript" src="gl-matrix.js"></script>
-    <script type="text/javascript" src="Pong.js"></script>
-</head>
-<body>
-<h1>Pong</h1>
-<canvas id="myCanvas" width="800" height="600"></canvas>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Pong</title>
+        <script src="jquery-3.5.1.min.js"></script>
+        <script type="text/javascript" src="webgl-debug.js"></script>
+        <script type="text/javascript" src="shaderUtils.js"></script>
+        <script type="text/javascript" src="gl-matrix.js"></script>
+        <script type="text/javascript" src="Pong.js"></script>
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="start"></div>
+        <h1>Pong</h1>
+        <div id="HPBar">
+            <div id="player1HP">
+                <!--<img class="HPIcon" src="heart.png">
+                <img class="HPIcon" src="heart.png">
+                <img class="HPIcon" src="heart.png">-->
+            </div>
+            <div id="player2HP">
+                <!--<img class="HPIcon" src="heart.png">
+                <img class="HPIcon" src="heart.png">
+                <img class="HPIcon" src="heart.png">-->
+            </div>
+        </div>
+        <canvas id="myCanvas" width="800" height="600"></canvas>
+        <br>
+        <button onclick="playerNumber(1)">1 Spieler</button>
+        <button onclick="playerNumber(2)">2 Spieler</button>
+        <button onclick="startGame()">Start</button>
+        <div id="winner">123</div>
+    </body>
 </html>
