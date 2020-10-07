@@ -94,7 +94,7 @@ function setUpBuffers(){
         var index = i * 3;
         var angle = degreesPerTriangle * i;
         var scaleX = 40;
-        var scaleY = 25;
+        var scaleY = 30;
         vertices[index] = Math.cos(angle) / scaleX ;               // x
         vertices[index + 1] = Math.sin(angle) / scaleY + centerX; // y
         vertices[index + 2] = 0;                                 // z

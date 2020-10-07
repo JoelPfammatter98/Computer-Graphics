@@ -22,6 +22,7 @@
     <list default="true" id="c9012736-58fa-4019-9600-74fcdff9aadf" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Pong.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pong.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Test Circle/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Test Circle/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +56,7 @@
       <workItem from="1601655463069" duration="8433000" />
       <workItem from="1601844128545" duration="30387000" />
       <workItem from="1601934339543" duration="5717000" />
-      <workItem from="1602055212349" duration="5276000" />
+      <workItem from="1602055212349" duration="6376000" />
     </task>
     <servers />
   </component>
