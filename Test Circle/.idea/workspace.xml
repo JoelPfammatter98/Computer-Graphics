@@ -19,9 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9012736-58fa-4019-9600-74fcdff9aadf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pong.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pong.js" afterDir="false" />
+    <list default="true" id="be4b0d98-0a19-47f8-b88f-18849d50a00a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Pong Animation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Animation/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Pong Animation/Pong.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Animation/Pong.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,24 +38,24 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Test Circle" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c9012736-58fa-4019-9600-74fcdff9aadf" name="Default Changelist" comment="" />
+      <changelist id="be4b0d98-0a19-47f8-b88f-18849d50a00a" name="Default Changelist" comment="" />
       <created>1601655462039</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601655462039</updated>
       <workItem from="1601655463069" duration="8433000" />
-      <workItem from="1601844128545" duration="30387000" />
-      <workItem from="1601934339543" duration="5717000" />
-      <workItem from="1602055212349" duration="5276000" />
+      <workItem from="1601996719726" duration="1332000" />
+      <workItem from="1602055241617" duration="8259000" />
     </task>
     <servers />
   </component>
@@ -75,15 +75,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1602055238953">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="2660" y="279" key="FileChooserDialogImpl" timestamp="1601655857251">
+      <screen x="1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1602055238953" />
     <state x="2660" y="279" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1601655857251" />
-    <state x="777" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601851755739">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="777" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1050/-1920.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1601851755739" />
     <state x="2536" y="243" key="run.anything.popup" timestamp="1601664133880">
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>

@@ -29,9 +29,12 @@ var posRight = 0;
 var posBall = {x: 0, y: 0, direction: ["left","mid"]};
 var startBall = 0;
 var player = 1;
-var playerHP = 2;
+var playerHP = 1;
 var player1HP = playerHP;
 var player2HP = playerHP;
+var ballColor = [];
+var ballSpeedX = 0.02;
+var ballSpeedY = 0.01;
 
 /**
  * Startup function to be called when the body is loaded
@@ -76,14 +79,39 @@ function setUpAttributesAndUniforms(){
 /**
  * Setup the buffers to use. If more objects are needed this should be split in a file per object.
  */
+
+var vertices = [];
+var numberOfTriangles = 100;
+var degreesPerTriangle = (4 * Math.PI) / numberOfTriangles;
+var centerX = 0;
+
+
 function setUpBuffers(){
     "use strict";
     rectangleObject.buffer = gl.createBuffer();
-    var vertices = [
+
+    for(var i = 0; i < numberOfTriangles; i++) {
+        var index = i * 3;
+        var angle = degreesPerTriangle * i;
+        var scaleX = 40;
+        var scaleY = 25;
+        vertices[index] = Math.cos(angle) / scaleX ;               // x
+        vertices[index + 1] = Math.sin(angle) / scaleY + centerX; // y
+        vertices[index + 2] = 0;                                 // z
+    }
+
+    vertices.push(
+        -0.5, -0.5, 0.0,
+        0.5, -0.5, 0.0,
+        0.5, 0.5, 0.0,
+        -0.5, 0.5, 0.0
+    )
+
+    /*var vertices = [
         -0.5, -0.5,
         0.5, -0.5,
         0.5, 0.5,
-        -0.5, 0.5];
+        -0.5, 0.5];*/
     gl.bindBuffer(gl.ARRAY_BUFFER, rectangleObject.buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 }
@@ -103,24 +131,37 @@ function draw() {
     drawShape(0.03, 0.3, -0.9, 0);
     drawShape(0.01, 2, 0, 0);*/
 
-
+    drawCircle(1, 1, posBall.x, posBall.y, ballColor);
     drawShape(25/gl.drawingBufferWidth, 0.3, -750/gl.drawingBufferWidth, posLeft, [0,1,0,1]);
     //drawShape(25/gl.drawingBufferWidth, 200/gl.drawingBufferHeight, 750/gl.drawingBufferWidth, 200/gl.drawingBufferHeight);
     drawShape(25/gl.drawingBufferWidth, 0.3, 750/gl.drawingBufferWidth, posRight, [1,0,1,1]);
     drawShape(5/gl.drawingBufferWidth, 1200/gl.drawingBufferHeight, 0, 0, [1,1,1,1]);
-    drawShape(0.05, 0.06, posBall.x, posBall.y, [0,1,0,1]);
+    //drawShape(0.05, 0.06, posBall.x, posBall.y, ballColor);
+
 
     /*drawShape(25.0/ gl.drawingBufferWidth,150.0/gl.drawingBufferHeight, 30, 0/gl.drawingBufferHeight)
     drawShape(25.0/ gl.drawingBufferWidth,150.0/gl.drawingBufferHeight, -30, 0/gl.drawingBufferHeight)
     drawShape(5.0/ gl.drawingBufferWidth,1200.0/gl.drawingBufferHeight, 0, 0/gl.drawingBufferHeight)*/
 
-    //gl.uniform4f(ctx.uColorId, 0, 1, 0, 1);
-    gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+    gl.uniform4f(ctx.uColorId, 0, 1, 0, 1);
+    //gl.drawArrays(gl.TRIANGLE_FAN, numberOfTriangles, 4);
 
     /*if(startBall == 0) {
         animateBallV = requestAnimationFrame(animateBall)
         startBall = 1;
     }*/
+}
+
+function drawCircle(width, height, x, y, color) {
+    gl.vertexAttribPointer(ctx.aVertexPositionId, 3, gl.FLOAT, false, 0, 0);
+
+    var projectionMat = mat3.create();
+    mat3.fromTranslation(projectionMat, [x,y]);
+    mat3.scale(projectionMat, projectionMat, [width, height]);
+    gl.uniformMatrix3fv(ctx.uProjectionMatId, false, projectionMat);
+
+    gl.uniform4f(ctx.uColorId, color[0], color[1], color[2], color[3]);
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, numberOfTriangles -8); // draw the `O`
 }
 
 function drawShape(width, height, x, y, color) {
@@ -136,7 +177,7 @@ function drawShape(width, height, x, y, color) {
     gl.uniformMatrix3fv(ctx.uProjectionMatId, false, projectionMat);*/
 
     gl.uniform4f(ctx.uColorId, color[0], color[1], color[2], color[3]);
-    gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+    gl.drawArrays(gl.TRIANGLE_FAN, numberOfTriangles, 8);
 }
 
 // Key Handling
@@ -305,34 +346,41 @@ function checkCollision() {
     else if(posBall.y >= 0.97 || posBall.y <= -0.97) {
         if(posBall.direction[1] == "up") {
             posBall.direction[1] = "down";
-            posBall.y = posBall.y - 0.01;
+            posBall.y = posBall.y - ballSpeedY;
         }
         else {
             posBall.direction[1] = "up";
-            posBall.y = posBall.y + 0.01;
+            posBall.y = posBall.y + ballSpeedY;
         }
     }
     else if(posBall.direction[0] == "right" && posBall.direction[1] == "mid") {
-        posBall.x = posBall.x + 0.02;
+        posBall.x = posBall.x + ballSpeedX;
     }
     else if(posBall.direction[0] == "left" && posBall.direction[1] == "mid") {
-        posBall.x = posBall.x - 0.02;
+        posBall.x = posBall.x - ballSpeedX;
     }
     else if(posBall.direction[0] == "right" && posBall.direction[1] == "up") {
-        posBall.x = posBall.x + 0.02;
-        posBall.y = posBall.y + 0.01;
+        posBall.x = posBall.x + ballSpeedX;
+        posBall.y = posBall.y + ballSpeedY;
     }
     else if(posBall.direction[0] == "right" && posBall.direction[1] == "down") {
-        posBall.x = posBall.x + 0.02;
-        posBall.y = posBall.y - 0.01;
+        posBall.x = posBall.x + ballSpeedX;
+        posBall.y = posBall.y - ballSpeedY;
     }
     else if(posBall.direction[0] == "left" && posBall.direction[1] == "up"){
-        posBall.x = posBall.x - 0.02;
-        posBall.y = posBall.y + 0.01;
+        posBall.x = posBall.x - ballSpeedX;
+        posBall.y = posBall.y + ballSpeedY;
     }
     else if(posBall.direction[0] == "left" && posBall.direction[1] == "down"){
-        posBall.x = posBall.x - 0.02;
-        posBall.y = posBall.y - 0.01;
+        posBall.x = posBall.x - ballSpeedX;
+        posBall.y = posBall.y - ballSpeedY;
+    }
+
+    if(posBall.x > 0) {
+        ballColor = [0,1,0,1];
+    }
+    else if(posBall.x < 0) {
+        ballColor = [1,0,1,1];
     }
 }
 
@@ -370,6 +418,7 @@ function gameEnd(winner) {
     posBall.x = 0;
     posBall.direction[0] = "left";
     posBall.direction[1] = "mid";
+    ballColor = [1,1,1,1];
     posRight = 0;
     posLeft = 0;
     var count = 3;
@@ -386,6 +435,7 @@ function gameEnd(winner) {
             $("#player2HP img").last().remove();
             $("#winner").text("Player 1 wins the Game");
             $("#winner").show();
+            return
         }
     }
     else if(winner == 2){
