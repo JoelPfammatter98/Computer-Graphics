@@ -29,7 +29,7 @@ var posRight = 0;
 var posBall = {x: 0, y: 0, direction: ["left","mid"]};
 var startBall = 0;
 var player = 1;
-var playerHP = 1;
+var playerHP = 2;
 var player1HP = playerHP;
 var player2HP = playerHP;
 var ballColor = [];
@@ -471,13 +471,13 @@ function gameEnd(winner) {
                 $("#start").text(count);
 
                 setTimeout(function () {
-                    $("#start").text("GO");
+                    //$("#start").text("GO");
                     animateBallV = requestAnimationFrame(animateBall);
 
-                    setTimeout(function () {
+                    //setTimeout(function () {
                         $("#start").hide();
                         $("#winner").hide();
-                    }, 1000);
+                    //}, 1000);
                 }, 1000);
             }, 1000);
         }, 1000);
