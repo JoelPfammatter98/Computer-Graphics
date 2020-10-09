@@ -35,3 +35,14 @@
 .HPIcon {
     width: 30px;
 }
+
+#myCanvas {
+    clear: both;
+    float: left;
+}
+
+.buttons {
+    clear: both;
+    float: left;
+    margin-top: 20px;
+}
