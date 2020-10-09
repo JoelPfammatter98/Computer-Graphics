@@ -21,9 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="be4b0d98-0a19-47f8-b88f-18849d50a00a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../Pong Animation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Animation/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Pong Animation/Pong.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Animation/Pong.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Pong Animation/pong.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Animation/pong.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Pong Animation/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Pong Animation/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

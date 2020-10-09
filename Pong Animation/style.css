@@ -16,6 +16,8 @@
     display: none;
     width: 800px;
     text-align: center;
+    clear: both;
+    float: left;
 }
 
 #HPBar {
