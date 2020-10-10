@@ -29,12 +29,13 @@ var posRight = 0;
 var posBall = {x: 0, y: 0, direction: ["left","mid"]};
 var startBall = 0;
 var player = 1;
-var playerHP = 2;
+var playerHP = 3;
 var player1HP = playerHP;
 var player2HP = playerHP;
-var ballColor = [];
+var ballColor = [1,1,1,1];
 var ballSpeedX = 0.02;
 var ballSpeedY = 0.01;
+var ballSpeed = 0.01;
 
 /**
  * Startup function to be called when the body is loaded
@@ -44,8 +45,8 @@ function startup() {
     var canvas = document.getElementById("myCanvas");
     gl = createGLContext(canvas);
     initGL();
-    window.addEventListener('keyup', onKeyup, false);
-    window.addEventListener('keydown', onKeydown, false);
+    /*window.addEventListener('keyup', onKeyup, false);
+    window.addEventListener('keydown', onKeydown, false);*/
 
 
     HP();
@@ -61,7 +62,7 @@ function initGL() {
     setUpAttributesAndUniforms();
     setUpBuffers();
     
-    gl.clearColor(0.1, 0.1, 0.1, 1);
+    gl.clearColor(0, 0, 0, 1);
 }
 
 /**
@@ -333,13 +334,25 @@ function checkCollision() {
     }
     else if(posBall.x <= -0.9 && posBall.direction[0] == "left" && (posBall.y > (posLeft - 0.175) && posBall.y < (posLeft + 0.175))) {
         posBall.direction[0] = "right";
-        if(posBall.direction[1] == "mid") {
+        /*if(posBall.direction[1] == "mid") {
+            posBall.direction[1] = "down";
+        }*/
+        if(posBall.y >= posLeft) {
+            posBall.direction[1] = "up";
+        }
+        else {
             posBall.direction[1] = "down";
         }
     }
     else if(posBall.direction[0] == "right" && posBall.x >= 0.9 && (posBall.y > (posRight - 0.175) && posBall.y < (posRight + 0.175))) {
         posBall.direction[0] = "left";
-        if(posBall.direction[1] == "mid") {
+        /*if(posBall.direction[1] == "mid") {
+            posBall.direction[1] = "down";
+        }*/
+        if(posBall.y >= posLeft) {
+            posBall.direction[1] = "up";
+        }
+        else {
             posBall.direction[1] = "down";
         }
     }
@@ -387,20 +400,46 @@ function checkCollision() {
 function KIAnimation() {
     if(posBall.y < posRight) {
         if((Math.round(posRight * 100)/100) == 0.81) {
-            posRight = posRight - 0.01;
+            posRight = posRight - ballSpeed;
         }
         else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
-            posRight = posRight - 0.01;
+            posRight = posRight - ballSpeed;
         }
     }
     else if( posBall.y > posRight) {
         if((Math.round(posRight * 100)/100) == -0.81) {
-            posRight = posRight + 0.01;
+            posRight = posRight + ballSpeed;
         }
         else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
-            posRight = posRight + 0.01;
+            posRight = posRight + ballSpeed;
         }
     }
+
+    /*if(posBall.x < 0 && posRight > 0.03) {
+        posRight = posRight - 0.004;
+    }
+    else if(posBall.x < 0 && posRight < -0.03) {
+        posRight = posRight + 0.004;
+    }
+    else if(posBall.x < 0) {
+
+    }
+    else if(posBall.y < posRight) {
+        if((Math.round(posRight * 100)/100) == 0.81) {
+            posRight = posRight - ballSpeed;
+        }
+        else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+            posRight = posRight - ballSpeed;
+        }
+    }
+    else if( posBall.y > posRight) {
+        if((Math.round(posRight * 100)/100) == -0.81) {
+            posRight = posRight + ballSpeed;
+        }
+        else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+            posRight = posRight + ballSpeed;
+        }
+    }*/
 }
 
 function animateBall() {
@@ -427,13 +466,16 @@ function gameEnd(winner) {
         if(player2HP > 1) {
             player2HP--;
             $("#player2HP img").last().remove();
+            $("#winner").css("color", "#00FF00");
             $("#winner").text("Player 1 wins this round");
             $("#winner").show();
         }
         else {
             player2HP = 0;
             $("#player2HP img").last().remove();
+            $("#winner").css("color", "#00FF00");
             $("#winner").text("Player 1 wins the Game");
+            $("#startButton").show();
             $("#winner").show();
             return
         }
@@ -443,8 +485,11 @@ function gameEnd(winner) {
             player1HP--;
             $("#player1HP img").last().remove();
             if (player == 1) {
+                $("#winner").css("color", "#FF00FF");
                 $("#winner").text("Computer wins this round");
-            } else {
+            }
+            else {
+                $("#winner").css("color", "#FF00FF");
                 $("#winner").text("Player 2 wins this round");
             }
             $("#winner").show();
@@ -452,8 +497,16 @@ function gameEnd(winner) {
         else {
             player1HP = 0;
             $("#player1HP img").last().remove();
-            $("#winner").text("Player 2 wins the Game");
+            if(player == 1) {
+                $("#winner").css("color", "#FF00FF");
+                $("#winner").text("Computer wins the Game");
+            }
+            else {
+                $("#winner").css("color", "#FF00FF");
+                $("#winner").text("Player 2 wins the Game");
+            }
             $("#winner").show();
+            $("#startButton").show();
             return
         }
     }
@@ -485,6 +538,14 @@ function gameEnd(winner) {
 
 function playerNumber(num) {
     player = num;
+    if(num == 1) {
+        $("#buttonPlayerVsPC").attr("src", "PlayerVsPcActive.png");
+        $("#buttonPlayerVsPlayer").attr("src", "PlayerVsPlayerInactive.png");
+    }
+    else {
+        $("#buttonPlayerVsPC").attr("src", "PlayerVsPcInactive.png");
+        $("#buttonPlayerVsPlayer").attr("src", "PlayerVsPlayerActive.png");
+    }
 }
 
 function startGame() {
@@ -492,6 +553,7 @@ function startGame() {
     $("#winner").hide();
     $("#player1HP").empty();
     $("#player2HP").empty();
+    $("#startButton").hide();
     HP();
     player1HP = playerHP;
     player2HP = playerHP;
@@ -503,4 +565,10 @@ function HP() {
         $("#player1HP").prepend('<img class=\"HPIcon\" src=\"player1HP.png\">');
         $("#player2HP").prepend('<img class=\"HPIcon\" src=\"player2HP.png\">');
     }
+}
+
+function changeSpeed(speedX, speed, speed) {
+    ballSpeedX =  speedX;
+    ballSpeedY =  speedY;
+    ballSpeed = speed;
 }
