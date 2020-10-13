@@ -1,16 +1,6 @@
-//
-// DI Computer Graphics
-//
-// WebGL Exercises
-//
-
-// Register function to call after document has loaded
 window.onload = startup;
 
-// the gl object is saved globally
 var gl;
-
-// we keep all local parameters for the program in a single object
 var ctx = {
     shaderProgram: -1,
     aVertexPositionId: -1,
@@ -18,8 +8,6 @@ var ctx = {
     uProjectionMatId: -1,
     uModelMatId: -1
 };
-
-// we keep all the parameters for drawing a specific object together
 var rectangleObject = {
     buffer: -1
 };
@@ -34,8 +22,20 @@ var player1HP = playerHP;
 var player2HP = playerHP;
 var ballColor = [1,1,1,1];
 var ballSpeedX = 0.02;
-var ballSpeedY = 0.01;
-var ballSpeed = 0.01;
+var ballSpeedY = 0.007;
+var KISpeed = 0.015;
+var vertices = [];
+var numberOfTriangles = 100;
+var degreesPerTriangle = (4 * Math.PI) / numberOfTriangles;
+var centerX = 0;
+var animationLeftUpV;
+var animationLeftDownV;
+var animationRightUpV;
+var animationRightDownV;
+var animateBallV;
+var keyLeftDown = 0;
+var keyRightDown = 0;
+var randomV;
 
 /**
  * Startup function to be called when the body is loaded
@@ -45,10 +45,6 @@ function startup() {
     var canvas = document.getElementById("myCanvas");
     gl = createGLContext(canvas);
     initGL();
-    /*window.addEventListener('keyup', onKeyup, false);
-    window.addEventListener('keydown', onKeydown, false);*/
-
-
     HP();
     draw();
 }
@@ -80,13 +76,6 @@ function setUpAttributesAndUniforms(){
 /**
  * Setup the buffers to use. If more objects are needed this should be split in a file per object.
  */
-
-var vertices = [];
-var numberOfTriangles = 100;
-var degreesPerTriangle = (4 * Math.PI) / numberOfTriangles;
-var centerX = 0;
-
-
 function setUpBuffers(){
     "use strict";
     rectangleObject.buffer = gl.createBuffer();
@@ -96,9 +85,9 @@ function setUpBuffers(){
         var angle = degreesPerTriangle * i;
         var scaleX = 40;
         var scaleY = 30;
-        vertices[index] = Math.cos(angle) / scaleX ;               // x
-        vertices[index + 1] = Math.sin(angle) / scaleY + centerX; // y
-        vertices[index + 2] = 0;                                 // z
+        vertices[index] = Math.cos(angle) / scaleX ;
+        vertices[index + 1] = Math.sin(angle) / scaleY + centerX;
+        vertices[index + 2] = 0;
     }
 
     vertices.push(
@@ -108,11 +97,6 @@ function setUpBuffers(){
         -0.5, 0.5, 0.0
     )
 
-    /*var vertices = [
-        -0.5, -0.5,
-        0.5, -0.5,
-        0.5, 0.5,
-        -0.5, 0.5];*/
     gl.bindBuffer(gl.ARRAY_BUFFER, rectangleObject.buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 }
@@ -128,29 +112,13 @@ function draw() {
     gl.vertexAttribPointer(ctx.aVertexPositionId, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(ctx.aVertexPositionId);
 
-    /*drawShape(0.03, 0.3, 0.9, 0);
-    drawShape(0.03, 0.3, -0.9, 0);
-    drawShape(0.01, 2, 0, 0);*/
-
     drawCircle(1, 1, posBall.x, posBall.y, ballColor);
     drawShape(25/gl.drawingBufferWidth, 0.3, -750/gl.drawingBufferWidth, posLeft, [0,1,0,1]);
-    //drawShape(25/gl.drawingBufferWidth, 200/gl.drawingBufferHeight, 750/gl.drawingBufferWidth, 200/gl.drawingBufferHeight);
     drawShape(25/gl.drawingBufferWidth, 0.3, 750/gl.drawingBufferWidth, posRight, [1,0,1,1]);
     drawShape(5/gl.drawingBufferWidth, 1200/gl.drawingBufferHeight, 0, 0, [1,1,1,1]);
-    //drawShape(0.05, 0.06, posBall.x, posBall.y, ballColor);
 
-
-    /*drawShape(25.0/ gl.drawingBufferWidth,150.0/gl.drawingBufferHeight, 30, 0/gl.drawingBufferHeight)
-    drawShape(25.0/ gl.drawingBufferWidth,150.0/gl.drawingBufferHeight, -30, 0/gl.drawingBufferHeight)
-    drawShape(5.0/ gl.drawingBufferWidth,1200.0/gl.drawingBufferHeight, 0, 0/gl.drawingBufferHeight)*/
 
     gl.uniform4f(ctx.uColorId, 0, 1, 0, 1);
-    //gl.drawArrays(gl.TRIANGLE_FAN, numberOfTriangles, 4);
-
-    /*if(startBall == 0) {
-        animateBallV = requestAnimationFrame(animateBall)
-        startBall = 1;
-    }*/
 }
 
 function drawCircle(width, height, x, y, color) {
@@ -166,68 +134,16 @@ function drawCircle(width, height, x, y, color) {
 }
 
 function drawShape(width, height, x, y, color) {
-
     var projectionMat = mat3.create();
     mat3.fromTranslation(projectionMat, [x,y]);
     mat3.scale(projectionMat, projectionMat, [width, height]);
     gl.uniformMatrix3fv(ctx.uProjectionMatId, false, projectionMat);
 
-    /*var projectionMat = mat3.create();
-    mat3.fromScaling(projectionMat, [width, height]);
-    mat3.translate(projectionMat, projectionMat, [x,y]);
-    gl.uniformMatrix3fv(ctx.uProjectionMatId, false, projectionMat);*/
-
     gl.uniform4f(ctx.uColorId, color[0], color[1], color[2], color[3]);
     gl.drawArrays(gl.TRIANGLE_FAN, numberOfTriangles, 8);
 }
 
-// Key Handling
-var key = {
-    _pressed: {},
 
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40
-};
-
-function isDown (keyCode) {
-    return key._pressed[keyCode];
-}
-
-function onKeydown(event) {
-    key._pressed[event.keyCode] = true;
-}
-
-function onKeyup(event) {
-    delete key._pressed[event.keyCode];
-}
-
-/*window.addEventListener('keydown', function (event)
-{
-    if (event.keyCode === 87) {
-        console.log(posLeft)
-        if(posLeft <= 0.8) {
-            posLeft = posLeft + 0.05;
-        }
-        draw();
-    }
-    else if (event.keyCode === 83) {
-        if(posLeft >= -0.8) {
-            posLeft = posLeft - 0.05;
-        }
-        draw();
-    }
-
-});*/
-
-var animationLeftUpV;
-var animationLeftDownV;
-var animationRightUpV;
-var animationRightDownV;
-var animateBallV;
-var keyLeftDown = 0;
-var keyRightDown = 0;
 window.addEventListener('keydown', function (event)
 {
     if (event.keyCode === 87) {
@@ -256,8 +172,7 @@ window.addEventListener('keydown', function (event)
     }
 });
 
-window.addEventListener('keyup', function (event)
-{
+window.addEventListener('keyup', function (event) {
     if (event.keyCode === 87) {
         cancelAnimationFrame(animationLeftUpV);
         keyLeftDown = 0;
@@ -311,32 +226,13 @@ function animationRightDown() {
 
 function checkCollision() {
     if(posBall.x < -0.92) {
-        //console.log("Right wins");
-        /*posBall.y = 0;
-        posBall.x = 0;
-        posBall.direction[0] = "left";
-        posBall.direction[1] = "mid";
-        if(player == 1) {
-            posRight = 0;
-        }*/
         gameEnd(2);
     }
     else if(posBall.x > 0.92) {
-        //console.log("Left wins")
-        /*posBall.y = 0;
-        posBall.x = 0;
-        posBall.direction[0] = "right";
-        posBall.direction[1] = "mid";
-        if(player == 1) {
-            posRight = 0;
-        }*/
         gameEnd(1)
     }
     else if(posBall.x <= -0.9 && posBall.direction[0] == "left" && (posBall.y > (posLeft - 0.175) && posBall.y < (posLeft + 0.175))) {
         posBall.direction[0] = "right";
-        /*if(posBall.direction[1] == "mid") {
-            posBall.direction[1] = "down";
-        }*/
         if(posBall.y >= posLeft) {
             posBall.direction[1] = "up";
         }
@@ -346,10 +242,7 @@ function checkCollision() {
     }
     else if(posBall.direction[0] == "right" && posBall.x >= 0.9 && (posBall.y > (posRight - 0.175) && posBall.y < (posRight + 0.175))) {
         posBall.direction[0] = "left";
-        /*if(posBall.direction[1] == "mid") {
-            posBall.direction[1] = "down";
-        }*/
-        if(posBall.y >= posLeft) {
+        if(posBall.y >= posRight) {
             posBall.direction[1] = "up";
         }
         else {
@@ -398,48 +291,58 @@ function checkCollision() {
 }
 
 function KIAnimation() {
-    if(posBall.y < posRight) {
-        if((Math.round(posRight * 100)/100) == 0.81) {
-            posRight = posRight - ballSpeed;
-        }
-        else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
-            posRight = posRight - ballSpeed;
-        }
-    }
-    else if( posBall.y > posRight) {
-        if((Math.round(posRight * 100)/100) == -0.81) {
-            posRight = posRight + ballSpeed;
-        }
-        else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
-            posRight = posRight + ballSpeed;
-        }
-    }
-
-    /*if(posBall.x < 0 && posRight > 0.03) {
-        posRight = posRight - 0.004;
+    if(posBall.x < 0 && posRight > 0.03) {
+        posRight = posRight - 0.008;
     }
     else if(posBall.x < 0 && posRight < -0.03) {
-        posRight = posRight + 0.004;
+        posRight = posRight + 0.008;
     }
     else if(posBall.x < 0) {
 
     }
-    else if(posBall.y < posRight) {
-        if((Math.round(posRight * 100)/100) == 0.81) {
-            posRight = posRight - ballSpeed;
+    else if(posBall.y < posRight-0.01) {
+
+        if(posBall.x > -0.01 && posBall.x < 0.01) {
+            randomV = Math.floor(Math.random() * 10);
+        }
+        if(posBall.x >= 0.85) {
+            if(randomV < 5 && (Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+                console.log("down1")
+                posRight = posRight + KISpeed;
+            }
+            else if(randomV >= 5 && (Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+                console.log("up1")
+                posRight = posRight - KISpeed;
+            }
+        }
+        else if((Math.round(posRight * 100)/100) == 0.81) {
+            posRight = posRight - KISpeed;
         }
         else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
-            posRight = posRight - ballSpeed;
+            posRight = posRight - KISpeed;
         }
     }
-    else if( posBall.y > posRight) {
-        if((Math.round(posRight * 100)/100) == -0.81) {
-            posRight = posRight + ballSpeed;
+    else if( posBall.y > posRight+0.01) {
+        if(posBall.x > -0.01 && posBall.x < 0.01) {
+            randomV = Math.floor(Math.random() * 10);
+        }
+        if(posBall.x >= 0.85) {
+            if(randomV < 5 && (Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+                console.log("down2")
+                posRight = posRight + KISpeed;
+            }
+            else if(randomV >= 5 && (Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
+                console.log("up2")
+                posRight = posRight - KISpeed;
+            }
+        }
+        else if((Math.round(posRight * 100)/100) == -0.81) {
+            posRight = posRight + KISpeed;
         }
         else if((Math.round(posRight * 100)/100) <= 0.8 && (Math.round(posRight * 100)/100) >= -0.8) {
-            posRight = posRight + ballSpeed;
+            posRight = posRight + KISpeed;
         }
-    }*/
+    }
 }
 
 function animateBall() {
@@ -455,7 +358,6 @@ function gameEnd(winner) {
     cancelAnimationFrame(animateBallV);
     posBall.y = 0;
     posBall.x = 0;
-    posBall.direction[0] = "left";
     posBall.direction[1] = "mid";
     ballColor = [1,1,1,1];
     posRight = 0;
@@ -463,6 +365,7 @@ function gameEnd(winner) {
     var count = 3;
 
     if(winner == 1) {
+        posBall.direction[0] = "right";
         if(player2HP > 1) {
             player2HP--;
             $("#player2HP img").last().remove();
@@ -481,6 +384,7 @@ function gameEnd(winner) {
         }
     }
     else if(winner == 2){
+        posBall.direction[0] = "left";
         if(player1HP > 1) {
             player1HP--;
             $("#player1HP img").last().remove();
@@ -511,29 +415,22 @@ function gameEnd(winner) {
         }
     }
 
-
     $("#start").text(count);
     $("#start").show();
 
+    setTimeout(function () {
+        count--;
+        $("#start").text(count);
         setTimeout(function () {
             count--;
             $("#start").text(count);
-
             setTimeout(function () {
-                count--;
-                $("#start").text(count);
-
-                setTimeout(function () {
-                    //$("#start").text("GO");
-                    animateBallV = requestAnimationFrame(animateBall);
-
-                    //setTimeout(function () {
-                        $("#start").hide();
-                        $("#winner").hide();
-                    //}, 1000);
-                }, 1000);
+                animateBallV = requestAnimationFrame(animateBall);
+                $("#start").hide();
+                $("#winner").hide();
             }, 1000);
         }, 1000);
+    }, 1000);
 }
 
 function playerNumber(num) {
@@ -567,8 +464,8 @@ function HP() {
     }
 }
 
-function changeSpeed(speedX, speed, speed) {
+function changeSpeed(speedX, speedY, speed) {
     ballSpeedX =  speedX;
     ballSpeedY =  speedY;
-    ballSpeed = speed;
+    KISpeed = speed;
 }
