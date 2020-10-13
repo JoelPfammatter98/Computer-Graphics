@@ -15,7 +15,6 @@ var rectangleObject = {
 var posLeft = 0;
 var posRight = 0;
 var posBall = {x: 0, y: 0, direction: ["left","mid"]};
-var startBall = 0;
 var player = 1;
 var playerHP = 3;
 var player1HP = playerHP;

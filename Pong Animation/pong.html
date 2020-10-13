@@ -15,21 +15,13 @@
         <div id="title">Pong</div>
         <div id="HPBar">
             <div id="player1HP">
-                <!--<img class="HPIcon" src="heart.png">
-                <img class="HPIcon" src="heart.png">
-                <img class="HPIcon" src="heart.png">-->
             </div>
             <div id="player2HP">
-                <!--<img class="HPIcon" src="heart.png">
-                <img class="HPIcon" src="heart.png">
-                <img class="HPIcon" src="heart.png">-->
             </div>
         </div>
         <canvas id="myCanvas" width="800" height="600"></canvas>
         <br>
         <div class="panel">
-            <!--<button onclick="playerNumber(1)">1 Spieler</button>
-            <button onclick="playerNumber(2)">2 Spieler</button><br>-->
             <input type="image" class="buttons" id="buttonPlayerVsPC" src="PlayerVsPcActive.png" onclick="playerNumber(1)">
             <input type="image" class="buttons" id="buttonPlayerVsPlayer" src="PlayerVsPlayerInactive.png" onclick="playerNumber(2)"><br>
             <input type="radio" id="easy" name="speed" value="1" onclick="changeSpeed(0.01, 0.005, 0.01)">
@@ -38,10 +30,8 @@
             <label for="normal">Normal</label><br>
             <input type="radio" id="hard" name="speed" value="3" onclick="changeSpeed(0.03, 0.02, 0.03)">
             <label for="hard">Hard</label><br>
-            <!--<button onclick="startGame()">Start</button>-->
             <input type="image" class="buttons" id="startButton" onclick="startGame()" src="Start.png">
         </div>
         <div id="winner"></div>
-
     </body>
 </html>
